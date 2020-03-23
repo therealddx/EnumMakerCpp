@@ -12,19 +12,27 @@ class EnumMapperCpp:
   
   # 
   # ctor. assigns members.
-  #   arg_flattenedEnum   : flattened Enum object, representing composite of constituent values.
-  #   arg_coordinateEnums : list of coordinate Enum's that only represent one constituent value.
+  #   arg_flattenedEnum   : flattened Enum object, representing composite of coordinate values.
+  #   arg_coordinateEnums : list of coordinate Enum's that only represent one coordinate value.
   # 
-  def __init__(self, arg_flattenedEnum):
+  def __init__(self, arg_flattenedEnum, arg_EnumCppFactory):
 
-    # make factory.
-    enumCppFactory = EnumCppFactory()
+    # vars.
+    debug = False
+
+    # assign factory handle.
+    self.enumCppFactory = arg_EnumCppFactory
 
     # assign.
-    flattenedEnum = arg_flattenedEnum
+    self.flattenedEnum = arg_flattenedEnum
 
     # produce coordinate enums.
     self.MakeCoordinateEnums()
+    
+    if debug:
+      print("EnumMapperCpp.__init__: self.coordinateEnums:")
+      for eachCoordinateEnum in self.coordinateEnums:
+        print(eachCoordinateEnum.ToString())
 
   def Map_Flattened_To_Coordinate():
     pass
@@ -32,13 +40,18 @@ class EnumMapperCpp:
   def Map_Coordinate_To_Flattened():
     pass 
 
-  def MakeCoordinateEnums():
+  # 
+  # MakeCoordinateEnums.
+  #   Given flattened EnumCpp, derive coordinate EnumCpp's.
+  # 
+  def MakeCoordinateEnums(self):
    
     # vars.
-    debug = True
+    debug = False
+    self.coordinateEnums = []
     
     # grab prototype EnumEntryCpp.
-    prototypeEntry = flattenedEnum.Get_enumEntries()[0]
+    prototypeEntry = self.flattenedEnum.Get_enumEntries()[0]
     if debug:
       print("EnumMapperCpp.MakeCoordinateEnums: prototypeEntry.ToString():")
       print(prototypeEntry.ToString())
@@ -50,20 +63,31 @@ class EnumMapperCpp:
       # 1) get the range of possible values for that coordinate.
       # 
       # for each EnumEntryCpp in this flattenedEnum.
+      # todo:efficiency: we know that a flattened enum repeats for each key.
+      #   so - when you find the same key twice, you can break.
       keyRange = []
-      for eachEntry in self.flattenedEnum:
+      for eachEntry in self.flattenedEnum.Get_enumEntries():
 
         # get the value of that entry, for the target key ('eachKey').
-        valueAtKey = keyRange.count(eachEntry.Get_privateData()[eachKey])
+        valueAtKey = eachEntry.Get_privateData()[eachKey]
 
-        # if that value has not-yet been logged as part of that coordinate's range:
+        if debug:
+          print("EnumMapperCpp.MakeCoordinateEnums: Key:")
+          print(eachKey)
+          print("")
+          print("EnumMapperCpp.MakeCoordinateEnums: Value:")
+          print(valueAtKey)
+          print("")
+
+        # if that value is not-yet-logged in that coordinate's range:
         if keyRange.count(valueAtKey) == 0:
-	  # then log it.
+          # then log it.
           keyRange.append(valueAtKey)
 
       if debug:
         print("EnumMapperCpp.MakeCoordinateEnums: keyRange:")
         print(str(keyRange))
+        print("")
 
       # 2) make up a long namespace.
       longNs = "EnumCoordinate_" + str(eachKey)
@@ -72,19 +96,15 @@ class EnumMapperCpp:
       shortNs = "EC" + eachKey[0]
 
       # can now make the new enum.
-      newEnumCpp = self.enumCppFactory.CreateEnumCpp \
-        ( shortNs     # short name for namespace.
-	, longNs      # full name.
-	, [ eachKey ] # intentionally a single-coordinate enum.
-	, keyRange    # empirically-determined range-of-values for this coordinate.
-	)
+      newEnumCpp = self.enumCppFactory.CreateEnumCpp(shortNs, longNs, 
+        [ eachKey ], [ keyRange ] )
 
       # ret.
       if debug:
         print("EnumMapperCpp.MakeCoordinateEnums: newEnumCpp:")
         print(newEnumCpp.ToString())
-
-      return newEnumCpp
+      
+      self.coordinateEnums.append(newEnumCpp)
 
   # 
   # members: data.

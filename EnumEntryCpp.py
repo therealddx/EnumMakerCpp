@@ -38,7 +38,7 @@ class EnumEntryCpp:
     # cut off last '_'.
     return toReturn[:-1]
 
-  def Get_privateData():
+  def Get_privateData(self):
     return self.privateData.copy()
 
   # 

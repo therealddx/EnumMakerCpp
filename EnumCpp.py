@@ -28,6 +28,7 @@ class EnumCpp:
     # 
     # only admit enum entries that are in this Enum's ns.
     # 
+    self.enumEntries = []
     for eachEntry in arg_allEnumEntryCpp:
       if (self.longNs == eachEntry.longNs):
         self.enumEntries.append(eachEntry)
@@ -64,7 +65,7 @@ class EnumCpp:
   #  
   # accessor: get member enumEntries.
   # 
-  def Get_enumEntries():
+  def Get_enumEntries(self):
     return self.enumEntries.copy()
 
   # vars.
