@@ -9,12 +9,6 @@ from EnumMapperCpp import *
 # Test application.
 # 
 def Test_EnumMaker():
-#  enumCppFactory = EnumCppFactory()
-#
-#  newEnumCpp = enumCppFactory.CreateEnumCpp("S", "EnumSetting",
-#    [ "SETTING" ], [ [ "1", "2", "3", "4", "5", "6", "7", "8" ] ] )
-#
-#  print(newEnumCpp.ToString())
 
   # 
   # make Factory.
@@ -24,40 +18,24 @@ def Test_EnumMaker():
   # 
   # make EnumCpp.
   # 
-  settingList = ["1", "2", "3", "4", "5"]
-  optionList = ["1", "2"]
+  bigList = ["1", "2" ]
+  littleList = ["L1", "L2", "L3" ]
+  minorList = ["M1", "M2", "M3", "M4" ]
+  tweakList = ["T1", "T2", "T3", "T4" ]
   myFlattenedEnum = ecf.CreateEnumCpp \
-    ( "SO"
-    , "SettingOption"
-    , [ "SETTING", "OPTION" ]
-    , [ settingList, optionList ]
+    ( "BLMT"
+    , "BigLittleMinorTweak"
+    , [ "BIG", "LITTLE", "MINOR", "TWEAK" ]
+    , [ bigList, littleList, minorList, tweakList ]
     )
-
-  print("Test_EnumMaker: myFlattenedEnum:")
-  print(myFlattenedEnum.ToString())
-  print("")
 
   # 
   # make Mapper.
   # 
   emc = EnumMapperCpp(myFlattenedEnum, ecf)
 
-# 
-# 
-# 
-# 
-# 
-
-def Test_SwitchCaseCpp():
-  scc = SwitchCaseCpp("myVar", \
-  { "31" : "function1();"
-  , "22" : "function2();"
-  , "13" : "function3();"
-  },
-  "return \"WrongErrorError\";"
-  )
-  
-  print("Switch Case Looks like:")
-  print(scc.ToString())
-
+  # 
+  # remind us what the original flattened was.
+  # 
+  print(myFlattenedEnum.ToString())
 

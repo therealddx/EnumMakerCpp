@@ -16,6 +16,51 @@ class EnumCppFactory:
 
   # 
   # CreateEnumCpp.
+  #   arg_listEnumCpp: list of single-coordinate EnumCpp's.
+  # 
+  def CreateEnumCpp(self, arg_shortNs, arg_longNs, arg_listEnumCpp):
+
+    # 
+    # marshal a list of single-coordinate EnumCpp's...
+    #   into named lists.
+    # 
+
+    sel_names = [] # list of type string.
+    sel_lists = [] # list of type list, raw string value.
+
+    # for each EnumCpp in the input list:
+    for eachEnumCpp in arg_listEnumCpp:
+    
+      # vars.
+      ref_enumEntries = eachEnumCpp.Get_enumEntries()
+      ref_list = []
+     
+      # 
+      # get the name of the prototype entry.
+      #   go to the EnumCpp.
+      #   get its first EnumEntryCpp instance.
+      #   get keys of that EnumEntryCpp.
+      #   convert those keys to a list for ordering.
+      #   grab first key. (single-coordinate => exactly one key).
+      # 
+      singleCoordinateKey = list(ref_enumEntries[0].keys())[0]
+
+      # append it.
+      sel_names.append(singleCoordinateKey)
+
+      # get the list for this name.
+      for eachEntry in ref_enumEntries:
+        # append its value to the named list.
+        ref_list.append(eachEntry.Get_privateData()[singleCoordinateKey])
+
+      # append it.
+      sel_lists.append(ref_list.copy())
+
+    # call CreateEnumCpp with marshaled data.
+    self.CreateEnumCpp(arg_shortNs, arg_longNs, sel_names, sel_lists)
+
+  # 
+  # CreateEnumCpp.
   # 
   def CreateEnumCpp(self, arg_shortNs, arg_longNs, arg_names, arg_lists):
     

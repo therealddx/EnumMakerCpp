@@ -9,21 +9,22 @@ from SwitchCaseCpp import *
 #   generate mapping functions between flattened and coordinate enums.
 # 
 class EnumMapperCpp:
-  
+
   # 
-  # ctor. assigns members.
-  #   arg_flattenedEnum   : flattened Enum object, representing composite of coordinate values.
-  #   arg_coordinateEnums : list of coordinate Enum's that only represent one coordinate value.
+  # ctor.
+  #   Construct instance. (flattened EnumCpp) => (coordinate EnumCpp's).
+  #   arg_flattenedEnum  : EnumCpp. flattened Enum as exploded coordinates.
+  #   arg_enumCppFactory : reference to instantiated EnumCppFactory.
   # 
-  def __init__(self, arg_flattenedEnum, arg_EnumCppFactory):
+  def __init__(self, arg_flattenedEnum, arg_enumCppFactory):
 
     # vars.
-    debug = False
+    debug = True
 
     # assign factory handle.
-    self.enumCppFactory = arg_EnumCppFactory
+    self.enumCppFactory = arg_enumCppFactory
 
-    # assign.
+    # assign flattened enum.
     self.flattenedEnum = arg_flattenedEnum
 
     # produce coordinate enums.
@@ -33,13 +34,7 @@ class EnumMapperCpp:
       print("EnumMapperCpp.__init__: self.coordinateEnums:")
       for eachCoordinateEnum in self.coordinateEnums:
         print(eachCoordinateEnum.ToString())
-
-  def Map_Flattened_To_Coordinate():
-    pass
-
-  def Map_Coordinate_To_Flattened():
-    pass 
-
+  
   # 
   # MakeCoordinateEnums.
   #   Given flattened EnumCpp, derive coordinate EnumCpp's.
@@ -47,7 +42,7 @@ class EnumMapperCpp:
   def MakeCoordinateEnums(self):
    
     # vars.
-    debug = False
+    debug = True
     self.coordinateEnums = []
     
     # grab prototype EnumEntryCpp.
@@ -65,6 +60,7 @@ class EnumMapperCpp:
       # for each EnumEntryCpp in this flattenedEnum.
       # todo:efficiency: we know that a flattened enum repeats for each key.
       #   so - when you find the same key twice, you can break.
+      # 
       keyRange = []
       for eachEntry in self.flattenedEnum.Get_enumEntries():
 
@@ -107,9 +103,43 @@ class EnumMapperCpp:
       self.coordinateEnums.append(newEnumCpp)
 
   # 
+  # MakeCoordinateMapping.
+  #   Make SwitchCaseCpp instances such that:
+  #   Elements of flattenedEnums map to elements of coordinateEnums.
+  # 
+  def MakeCoordinateMapping(self):
+
+    # 
+    # one mapping function for each coordinate enum.
+    # 
+
+    # 
+    # difference b/w writing a function, vs. a switch/case structure.
+    # 
+
+    pass
+
+  # 
+  # MakeFlattenedMapping.
+  #   Make SwitchCaseCpp structure such that:
+  #   Elements of coordinateEnums map to the correct flattenedEnum element.
+  # 
+  def MakeFlattenedMapping(self):
+    # 
+    # nesting of switch / case structures.
+    # 
+    pass
+
+  # 
   # members: data.
   # 
   flattenedEnum = None # of type EnumCpp.
   coordinateEnums = [] # list of type EnumCpp.
   enumCppFactory = None # Factory for objects of type: EnumCpp, EnumEntryCpp.
 
+#  def Map_Coordinate_To_Flattened():
+#    pass 
+#
+#  def MakeFlattenedEnum(self):
+#    pass
+# 

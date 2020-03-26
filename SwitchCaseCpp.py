@@ -5,8 +5,8 @@ class SwitchCaseCpp:
 
   # 
   # ctor.
-  #   arg_switchKey          : string representing driving variable of of switch/case.
-  #   arg_caseConsequence    : Dictionary mapping case-equalities to resultant C++ statements.
+  #   arg_switchKey          : string representing variable of switch/case.
+  #   arg_caseConsequence    : Maps cases to resultant C++ statements.
   #   arg_defaultConsequence : C++ statement for default-case.
   # 
   def __init__(self, arg_switchKey, arg_caseConsequence, arg_defaultConsequence):

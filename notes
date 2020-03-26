@@ -1,0 +1,42 @@
+todo's and whatnots.
+*******************************
+update: 03-25-2020.
+*******************************
+
+New functions to be added.
+  EnumMapperCpp.MakeCoordinateMapping
+  EnumMapperCpp.MakeFlattenedMapping.
+
+What we -won't- do.
+  EnumMapper.MakeFlattenedEnum, __init__ overload.
+This^ is because implementing a ctor overload that builds the instance
+from coordinate Enums is a redundant exercise in which EnumCppFactory is
+already plenty fluent.
+
+******************************8
+update: 03-23-2020.
+******************************
+
+most recent file: EnumMapperCpp.py.
+Good job: You got EnumMapperCpp.MakeCoordinateEnums.
+Function-to-be is EnumMapperCpp.Map_Flattened_To_Coordinate.
+  Map_Flattened_To_Coordinate is not certain on needing to be there.
+  More important is Get- accessors for flattened and coordinate Enums.
+
+Core design of EnumMapperCpp appears to be:
+  two __init__ functions.
+  One that takes flattened enums and generates coordinates.
+  One that takes coordinate enums and generates flattened.
+
+As a result, there will be an:
+  EnumMapperCpp.MakeCoordinateEnums (from flattened)
+  and an:
+  EnumMapperCpp.MakeFlattenedEnum (from coordinates)
+  one that applies to each of the __init__ functions.
+
+So left to do would be:
+  1) EnumMapperCpp.MakeFlattenedEnum (from coordinates).
+  Which would go into the new __init__ (from coordinates).
+  2) Deep copy for all objects that you have created since this project.
+  Which would allow for reliable + predictable accessor usage.
+
