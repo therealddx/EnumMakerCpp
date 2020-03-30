@@ -13,7 +13,7 @@ This^ is because implementing a ctor overload that builds the instance
 from coordinate Enums is a redundant exercise in which EnumCppFactory is
 already plenty fluent.
 
-******************************8
+******************************
 update: 03-23-2020.
 ******************************
 

@@ -117,6 +117,18 @@ class EnumMapperCpp:
     # difference b/w writing a function, vs. a switch/case structure.
     # 
 
+    # for each EnumCpp in your available coordinate keys.
+    #   get the prototype key (EnumEntryCpp, w/e its key is).
+    #   write the function prototype.
+    #   make a switch/case.
+    #     key: the input flattened value, function argument
+    #     one case for each flattened value.
+    #     for the case consequence:
+    #       get the flattened argument's value for the prototype key.
+    # 
+    # yawn... boring.
+    # 
+
     pass
 
   # 

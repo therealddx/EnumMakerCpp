@@ -1,11 +1,17 @@
 Doc, EnumMaker.
 
 Document Map:
+
+0. Concept.
   Theoretical Basis.
   Intended Process Flow.
-  Class Description - EnumMakerFactory.
+
+1. The Enum.
+  Class Description - EnumCppFactory.
   Class Description - EnumCpp.
   Class Description - EnumEntryCpp.
+
+2. The Mapping. (yet to come)
 
 **
 
@@ -42,6 +48,8 @@ enum SettingOption
 
 Often, the flattened representation is most useful for providing one consolidated, unique value for a combination of options. This flattened notation is likely to be the most useful representation in software developments where no room has been made to define a consolidated, non-primitive object for applying some configuration or sending a message. If a server process has been designed only such that it can accept a primitive data type, then the flattened enumeration packs more information into a single data transaction.
 
+While, in memory, a flattened-representation enumeration entry is only one integer, it is logically an object with defined attributes. For example, value 'SettingOption::SO_SETTING1_OPTION2' is an object with attribute "SETTING" equal to "1" and attribute "OPTION" equal to "2".
+
 At the same time, it is often important to understand what the individual coordinates correspond to. Maintaining separated coordinates is valuable, because it corresponds to the unpacking of data from the flattened enumeration to a the specific value of that one coordinate. 
 
 As such, it becomes important to cleanly manage the transition between the flattened enumeration (composite of all coordinates), and the separate enumerations (individual values for each coordinate), when handling data pertaining to these enums.
@@ -50,28 +58,30 @@ As such, it becomes important to cleanly manage the transition between the flatt
 
 Intended Process Flow.
 
-Make the keydata.
+Make the organic data.
+  This is the data that actually needs to be organized into C++ enumerations.
+  The user names every coordinate of interest, and defines its domain.
+  The user then passes that coordinate data into the next step.
+
 Using an EnumCppFactory:
-  Make EnumEntryCpp's. (mapping option-types to possible values).
+  Make EnumEntryCpp's. (mapping coordinate data to possible values).
   Make EnumCpp. (composed of EnumEntryCpp's).
-Make EnumMapperCpp. (provide switch/case mapping service b/w EnumCpp's).
-  Use SwitchCaseCpp's.
 
 **
 
-Class Description - EnumMakerFactory.
+Class Description - EnumCppFactory.
 __init__:
 This class has no data; it is solely a bank of functions for creating instances of EnumEntryCpp and EnumCpp.
 Thus, this function does nothing.
 
-CreateEnum:
+CreateEnumCpp:
 Calls CreateEnumEntrys, followed by a call to EnumCpp.__init__.
   
 CreateEnumEntrys:
 Calls CreateDicts, followed by looped calls to EnumEntryCpp.__init__.
 
 CreateDicts:
-Creates constituent Dictionary's for EnumEntryCpp's. Key-value mapping for said Dictionary's is, technically, a tree. Each coordinate to an enumeration entry only, in a practical scenario, has so many values that are applicable to it. For simplicity's sake, that tree is provided by a list of named lists. By iterating through the named lists, this function collates and expands the content of the named lists (many lists) into constituent Dictionary's (many enum entry objects).
+Creates constituent Dictionary's for flattened array of EnumEntryCpp's, given named coordinate lists.
 
 **
 
@@ -81,17 +91,16 @@ Aggregates references to EnumEntryCpp's.
 __init__:
 Assigns arguments to member variables.
 If any EnumEntryCpp's in the argument list don't match this class's namespace, they are ignored.
-This is a trivial argument-protection feature.
+  ^This is a trivial argument-protection feature.
 
 ToString:
-Prints deserialized representation of C++ enumeration.
-This includes the surrounding data (enum MyEnumName { ... }; ).
+Prints string representation of C++ enumeration.
 Able to access members of aggreagted EnumEntryCpp's.
 
 **
 
 Class Description - EnumEntryCpp.
-Represents one line-item from a C++ enumeration ("enum").
+Represents one line-item from a C++ enum.
 
 __init__:
 Trivial constructor. Assigns arguments to members.
